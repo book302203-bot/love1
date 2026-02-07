@@ -1,48 +1,69 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Love</title>
+<meta charset="UTF-8">
+<title>Love Heart</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000;
-      overflow: hidden;
-    }
+<style>
+  body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    height: 100vh;
+  }
 
-    .ui .Love_word {
-      color: #ea80b0;
-      font-size: 2rem;
-      transform: rotateZ(-30deg);
-      text-shadow: 0 0 10px #fff;
-      letter-spacing: 2px;
-      white-space: nowrap;
-      position: relative;
-
-      animation: horizontal 6s infinite alternate ease-in-out;
-      animation-delay: calc(var(--i) * -300ms);
-    }
-
-    @keyframes horizontal {
-      from {
-        transform: translateX(-50vw) rotateZ(-30deg);
-      }
-      to {
-        transform: translateX(50vw) rotateZ(-30deg);
-      }
-    }
-  </style>
+  .word {
+    position: absolute;
+    color: #ea80b0;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    text-shadow: 0 0 8px #fff;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+  }
+</style>
 </head>
 
 <body>
-  <div class="ui">
-    <span class="Love_word" style="--i:1">LOVE</span>
-    <span class="Love_word" style="--i:2">YOU</span>
-  </div>
+
+<script>
+  const words = [];
+  const text = "I love you";
+  const count = 200;
+
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement("span");
+    span.className = "word";
+    span.innerText = text;
+    document.body.appendChild(span);
+    words.push(span);
+  }
+
+  let t = 0;
+
+  function animate() {
+    t += 0.02;
+
+    words.forEach((word, i) => {
+      const angle = (i / count) * Math.PI * 2 + t;
+
+      // สมการหัวใจ ❤️
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y =
+        13 * Math.cos(angle) -
+        5 * Math.cos(2 * angle) -
+        2 * Math.cos(3 * angle) -
+        Math.cos(4 * angle);
+
+      word.style.left = window.innerWidth / 2 + x * 15 + "px";
+      word.style.top = window.innerHeight / 2 - y * 15 + "px";
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
 </body>
 </html>
