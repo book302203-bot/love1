@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Love Random</title>
+<title>Love</title>
 
 <style>
   body {
@@ -16,31 +16,42 @@
   /* ข้อความกลาง */
   .hint {
     position: fixed;
-    top: 20%;
+    top: 15%;
     width: 100%;
     text-align: center;
     color: #ea80b0;
-    font-size: 20px;
+    font-size: 22px;
     text-shadow: 0 0 10px #fff;
     z-index: 10;
     pointer-events: none;
   }
 
-  /* รูปที่เด้งขึ้น */
+  /* คำที่เป็นหัวใจ */
+  .word {
+    position: absolute;
+    color: #ea80b0;
+    font-size: 18px;
+    text-shadow: 0 0 8px #fff;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+  }
+
+  /* รูปเด้ง */
   .photo {
     position: fixed;
-    bottom: -200px;
+    bottom: -300px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 220px;
     border-radius: 16px;
     box-shadow: 0 0 20px #ea80b0;
     animation: popUp 1.2s ease-out forwards;
+    z-index: 5;
   }
 
   @keyframes popUp {
     from {
-      bottom: -200px;
+      bottom: -300px;
       opacity: 0;
     }
     to {
@@ -56,18 +67,54 @@
 <div class="hint">ลองกดหน้าจอ 1 ครั้ง 💖</div>
 
 <script>
-  const images = [
-    "img1.jpg",
-    "img2.jpg",
-    "img3.jpg",
-    "img4.jpg"
-    "img5.jpg"
-    "img6.jpg"
-    "img7.jpg"
-    "img8.jpg"
-  ];
+  /* ====== หัวใจข้อความ ====== */
+  const words = [];
+  const text = "I love you";
+  const count = 160;
 
-  let showing = false;
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement("span");
+    span.className = "word";
+    span.innerText = text;
+    document.body.appendChild(span);
+    words.push(span);
+  }
+
+  let t = 0;
+
+  function animateHeart() {
+    t += 0.004; // ความเร็ว (ช้า อ่านได้)
+
+    words.forEach((word, i) => {
+      const angle = (i / count) * Math.PI * 2 + t;
+
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y =
+        13 * Math.cos(angle) -
+        5 * Math.cos(2 * angle) -
+        2 * Math.cos(3 * angle) -
+        Math.cos(4 * angle);
+
+      word.style.left = window.innerWidth / 2 + x * 14 + "px";
+      word.style.top = window.innerHeight / 2 - y * 14 + "px";
+    });
+
+    requestAnimationFrame(animateHeart);
+  }
+
+  animateHeart();
+
+  /* ====== สุ่มรูป ====== */
+  const images = [
+  "img1.jpg",
+  "img2.jpg",
+  "img3.jpg",
+  "img4.jpg",
+  "img5.jpg",
+  "img6.jpg",
+  "img7.jpg",
+  "img8.jpg"
+];
 
   function randomImage() {
     const old = document.querySelector(".photo");
@@ -76,11 +123,10 @@
     const img = document.createElement("img");
     img.className = "photo";
 
-    const random = Math.floor(Math.random() * images.length);
-    img.src = images[random];
+    const r = Math.floor(Math.random() * images.length);
+    img.src = images[r];
 
     document.body.appendChild(img);
-
     document.querySelector(".hint").style.display = "none";
   }
 
