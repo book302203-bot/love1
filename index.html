@@ -1,18 +1,48 @@
-#ui. Love_word {
-  color: #ea80b0; font-size: 1.4rem;
-  transform: translateY(-100%) rotateZ(-30deg) ;
-  text-shadow: 0 0 10px #fff;
-  letter-spacing: 2px; white-space: nowrap;
-}
-#ui . Love_horizontal {
-  animation: horizontal 10000ms
-    infinite alternate ease-in-out;
-  animation-delay: calc(var(--i) * -300ms);
-}@keyframes horizontal {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(50%);
-  }
-}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Love</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .ui .Love_word {
+      color: #ea80b0;
+      font-size: 2rem;
+      transform: rotateZ(-30deg);
+      text-shadow: 0 0 10px #fff;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      position: relative;
+
+      animation: horizontal 6s infinite alternate ease-in-out;
+      animation-delay: calc(var(--i) * -300ms);
+    }
+
+    @keyframes horizontal {
+      from {
+        transform: translateX(-50vw) rotateZ(-30deg);
+      }
+      to {
+        transform: translateX(50vw) rotateZ(-30deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ui">
+    <span class="Love_word" style="--i:1">LOVE</span>
+    <span class="Love_word" style="--i:2">YOU</span>
+  </div>
+</body>
+</html>
