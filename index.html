@@ -27,7 +27,7 @@
     pointer-events: none;
   }
 
-  /* คำที่เรียงเป็นหัวใจ */
+  /* ข้อความหัวใจ */
   .word {
     position: absolute;
     color: #ea80b0;
@@ -37,7 +37,7 @@
     transform: translate(-50%, -50%);
   }
 
-  /* รูปเด้ง */
+  /* รูป */
   .photo {
     position: fixed;
     bottom: -300px;
@@ -45,29 +45,64 @@
     width: 220px;
     border-radius: 16px;
     box-shadow: 0 0 20px #ea80b0;
-    animation: popUp 1.6s ease-out forwards;
     z-index: 5;
   }
 
-  /* เด้ง + หมุนซ้ายขวา */
-  @keyframes popUp {
+  /* วิ่งซ้าย */
+  .to-left {
+    animation: popLeftSpin 3s ease-in forwards;
+  }
+
+  /* วิ่งขวา */
+  .to-right {
+    animation: popRightSpin 3s ease-in forwards;
+  }
+
+  /* เด้ง + วิ่งซ้าย + หมุน */
+  @keyframes popLeftSpin {
     0% {
       bottom: -300px;
+      left: 50%;
       opacity: 0;
       transform: translateX(-50%) rotate(0deg);
     }
-    40% {
+    25% {
       bottom: 30%;
       opacity: 1;
-      transform: translateX(-50%) rotate(-12deg);
+      transform: translateX(-50%) rotate(-90deg);
     }
-    70% {
-      transform: translateX(-50%) rotate(12deg);
+    60% {
+      transform: translateX(-50%) rotate(-180deg);
     }
     100% {
-      bottom: 25%;
-      opacity: 1;
+      bottom: 40%;
+      left: -300px;
+      opacity: 0;
+      transform: rotate(-360deg);
+    }
+  }
+
+  /* เด้ง + วิ่งขวา + หมุน */
+  @keyframes popRightSpin {
+    0% {
+      bottom: -300px;
+      left: 50%;
+      opacity: 0;
       transform: translateX(-50%) rotate(0deg);
+    }
+    25% {
+      bottom: 30%;
+      opacity: 1;
+      transform: translateX(-50%) rotate(90deg);
+    }
+    60% {
+      transform: translateX(-50%) rotate(180deg);
+    }
+    100% {
+      bottom: 40%;
+      left: 110%;
+      opacity: 0;
+      transform: rotate(360deg);
     }
   }
 </style>
@@ -78,7 +113,7 @@
 <div class="hint">ลองกดหน้าจอ 1 ครั้ง 💖</div>
 
 <script>
-  /* ================= หัวใจข้อความ ================= */
+  /* ===== หัวใจข้อความ ===== */
   const words = [];
   const text = "I love you";
   const count = 160;
@@ -92,13 +127,10 @@
   }
 
   let t = 0;
-
   function animateHeart() {
-    t += 0.004; // ความเร็ว (ยิ่งน้อยยิ่งช้า)
-
+    t += 0.004;
     words.forEach((word, i) => {
       const a = (i / count) * Math.PI * 2 + t;
-
       const x = 16 * Math.pow(Math.sin(a), 3);
       const y =
         13 * Math.cos(a) -
@@ -109,36 +141,30 @@
       word.style.left = window.innerWidth / 2 + x * 14 + "px";
       word.style.top = window.innerHeight / 2 - y * 14 + "px";
     });
-
     requestAnimationFrame(animateHeart);
   }
-
   animateHeart();
 
-  /* ================= สุ่มรูป ================= */
+  /* ===== สุ่มรูป ===== */
   const images = [
-    "img1.jpg",
-    "img2.jpg",
-    "img3.jpg",
-    "img4.jpg",
-    "img5.jpg",
-    "img6.jpg",
-    "img7.jpg",
-    "img8.jpg"
+    "img1.jpg","img2.jpg","img3.jpg","img4.jpg",
+    "img5.jpg","img6.jpg","img7.jpg","img8.jpg"
   ];
 
   function showRandomImage() {
-    const old = document.querySelector(".photo");
-    if (old) old.remove();
-
     const img = document.createElement("img");
     img.className = "photo";
 
-    const r = Math.floor(Math.random() * images.length);
-    img.src = images[r];
+    img.src = images[Math.floor(Math.random() * images.length)];
+
+    // สุ่มซ้าย / ขวา
+    img.classList.add(Math.random() < 0.5 ? "to-left" : "to-right");
 
     document.body.appendChild(img);
     document.querySelector(".hint").style.display = "none";
+
+    // ลบออกหลัง animation จบ
+    setTimeout(() => img.remove(), 3000);
   }
 
   document.addEventListener("click", showRandomImage);
